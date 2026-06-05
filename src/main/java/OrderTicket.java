@@ -111,10 +111,10 @@ public class OrderTicket {
     }
 
     private double applyOrderDiscounts(double subtotal) {
-        if (couponCode != null && couponCode.equals("SAVE10")) {
+        if ("SAVE10".equals(couponCode)) {
             subtotal = subtotal - 10;
         }
-        if (couponCode != null && couponCode.equals("STUDENT5") && customer.isStudent == true) {
+        if ("STUDENT5".equals(couponCode) && customer.isStudent) {
             subtotal = subtotal - 5;
         }
         if (customer.loyaltyLevel.equals("gold")) {
@@ -124,10 +124,7 @@ public class OrderTicket {
         } else if (customer.loyaltyLevel.equals("bronze")) {
             subtotal = subtotal * 0.98;
         }
-        if (subtotal < 0) {
-            subtotal = 0;
-        }
-        return subtotal;
+        return Math.max(subtotal, 0);
     }
 
     public String printTicket(String paymentMethod, String cashierName, String registerId, boolean rush) {
