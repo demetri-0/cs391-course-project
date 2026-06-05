@@ -153,43 +153,42 @@ public class OrderTicket {
         receipt = receipt + "Ticket: " + ticketNumber + "\n";
         receipt = receipt + "Customer: " + customer.n + "\n";
         receipt = receipt + "Phone: " + customer.phone + "\n";
-        receipt = receipt + "Address: " + customer.street + ", " + customer.city + ", " + customer.state + " "
-                + customer.zip + "\n";
+        receipt = receipt + "Address: " + customer.getFullAddress() + "\n";
         receipt = receipt + "Type: " + orderType + "\n";
         return receipt;
     }
 
     private String formatReceiptItems() {
-        String receipt = "";
+        String receiptItems = "";
         for (int i = 0; i < items.size(); i++) {
-            MenuItem m = items.get(i);
-            int q = quantities.get(i);
-            String line = formatReceiptLine(m, q);
-            receipt = receipt + line + "\n";
+            MenuItem item = items.get(i);
+            int quantity = quantities.get(i);
+            String line = formatReceiptLine(item, quantity);
+            receiptItems = receiptItems + line + "\n";
             tempLastPrintedLine = line;
         }
-        return receipt;
+        return receiptItems;
     }
 
-    private String formatReceiptLine(MenuItem m, int q) {
-        String line = q + " x " + m.name + " (" + m.type + "/" + m.size + ") @ "
-                + m.priceForDay(day, happyHour, campusEvent, couponCode);
-        if (m.type.equals("drink")) {
-            if (happyHour == true) {
+    private String formatReceiptLine(MenuItem item, int quantity) {
+        String line = quantity + " x " + item.name + " (" + item.type + "/" + item.size + ") @ "
+                + item.priceForDay(day, happyHour, campusEvent, couponCode);
+        if ("drink".equals(item.type)) {
+            if (happyHour) {
                 line = line + " happy-hour";
             }
-            if (m.vegan == true) {
+            if (item.vegan) {
                 line = line + " vegan";
             }
-        } else if (m.type.equals("meal")) {
-            if (m.spicy == true) {
+        } else if ("meal".equals(item.type)) {
+            if (item.spicy) {
                 line = line + " spicy";
             }
-            if (m.vegan == true) {
+            if (item.vegan) {
                 line = line + " vegan";
             }
-        } else if (m.type.equals("dessert")) {
-            if (m.seasonal == true) {
+        } else if ("dessert".equals(item.type)) {
+            if (item.seasonal) {
                 line = line + " seasonal";
             }
         } else {
