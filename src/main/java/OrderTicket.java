@@ -111,20 +111,20 @@ public class OrderTicket {
 
     private double calculateDeliveryFee(boolean rush, String street, String city, String state, String zip) {
         double deliveryFee = 0;
-        if (orderType.equals("delivery")) {
+        if ("delivery".equals(orderType)) {
             deliveryFee = 4.99;
             if (zip.startsWith("9")) {
                 deliveryFee = deliveryFee + 2.50;
             }
-            if (rush == true) {
+            if (rush) {
                 deliveryFee = deliveryFee + 3.00;
             }
             if (street.length() < 3 || city.length() < 2 || state.length() != 2 || zip.length() < 5) {
                 deliveryFee = deliveryFee + 10.00;
             }
-        } else if (orderType.equals("pickup")) {
+        } else if ("pickup".equals(orderType)) {
             deliveryFee = 0;
-        } else if (orderType.equals("dinein")) {
+        } else if ("dinein".equals(orderType)) {
             deliveryFee = 1.25;
         } else {
             deliveryFee = 2.00;
