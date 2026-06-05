@@ -122,19 +122,19 @@ public class OrderTicket {
     }
 
     private double calculateServiceFee(String paymentMethod, double subtotal) {
-        double serviceFee = 0;
-        if (paymentMethod.equals("credit")) {
-            serviceFee = subtotal * 0.03;
-        } else if (paymentMethod.equals("cash")) {
-            serviceFee = 0;
-        } else if (paymentMethod.equals("mealplan")) {
-            serviceFee = 0.45;
-        } else if (paymentMethod.equals("crypto")) {
-            serviceFee = 8.88;
-        } else {
-            serviceFee = 1.00;
+        if ("credit".equals(paymentMethod)) {
+            return subtotal * 0.03;
         }
-        return serviceFee;
+        if ("cash".equals(paymentMethod)) {
+            return 0;
+        }
+        if ("mealplan".equals(paymentMethod)) {
+            return 0.45;
+        }
+        if ("crypto".equals(paymentMethod)) {
+            return 8.88;
+        }
+        return 1.00;
     }
 
     public String printTicket(String paymentMethod, String cashierName, String registerId, boolean rush) {
