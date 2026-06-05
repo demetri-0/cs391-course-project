@@ -40,30 +40,7 @@ public class OrderTicket {
 
     public double calcTotal(String paymentMethod, boolean printDebug, String cashierName, String registerId,
             boolean rush, String street, String city, String state, String zip) {
-        double subtotal = 0;
-        int i = 0;
-        while (i < items.size()) {
-            MenuItem m = items.get(i);
-            int q = quantities.get(i);
-            double p = m.priceForDay(day, happyHour, campusEvent, couponCode);
-            if (m.type.equals("drink")) {
-                if (happyHour == true) {
-                    p = p - 0.15;
-                }
-            } else if (m.type.equals("meal")) {
-                if (q >= 3) {
-                    p = p - 0.35;
-                }
-            } else if (m.type.equals("dessert")) {
-                if (customer.loyaltyLevel.equals("gold")) {
-                    p = p - 0.25;
-                }
-            } else {
-                p = p;
-            }
-            subtotal = subtotal + (p * q);
-            i++;
-        }
+        double subtotal = calculateSubtotal();
 
         if (couponCode != null && couponCode.equals("SAVE10")) {
             subtotal = subtotal - 10;
@@ -123,6 +100,34 @@ public class OrderTicket {
         }
         tempRiskScore = total;
         return Math.round(total * 100.0) / 100.0;
+    }
+
+    private double calculateSubtotal() {
+        double subtotal = 0;
+        int i = 0;
+        while (i < items.size()) {
+            MenuItem m = items.get(i);
+            int q = quantities.get(i);
+            double p = m.priceForDay(day, happyHour, campusEvent, couponCode);
+            if (m.type.equals("drink")) {
+                if (happyHour == true) {
+                    p = p - 0.15;
+                }
+            } else if (m.type.equals("meal")) {
+                if (q >= 3) {
+                    p = p - 0.35;
+                }
+            } else if (m.type.equals("dessert")) {
+                if (customer.loyaltyLevel.equals("gold")) {
+                    p = p - 0.25;
+                }
+            } else {
+                p = p;
+            }
+            subtotal = subtotal + (p * q);
+            i++;
+        }
+        return subtotal;
     }
 
     public String printTicket(String paymentMethod, String cashierName, String registerId, boolean rush) {
