@@ -2,14 +2,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderTicket {
+    private static class OrderLine {
+        MenuItem item;
+        int quantity;
+
+        OrderLine(MenuItem item, int quantity) {
+            this.item = item;
+            this.quantity = quantity;
+        }
+    }
+
     public static double GLOBAL_TAX_RATE = 0.0825;
     public static int GLOBAL_NEXT_NUMBER = 1000;
     public static String GLOBAL_STORE_NAME = "Campus Spoon";
 
     public int ticketNumber;
     public CustomerProfile customer;
-    public List<MenuItem> items = new ArrayList<MenuItem>();
-    public List<Integer> quantities = new ArrayList<Integer>();
+    private List<OrderLine> lines = new ArrayList<OrderLine>();
     public String orderType;
     public String day;
     public boolean happyHour;
@@ -34,8 +43,7 @@ public class OrderTicket {
     }
 
     public void add(MenuItem item, int q) {
-        items.add(item);
-        quantities.add(q);
+        lines.add(new OrderLine(item, q));
     }
 
     public double calcTotal(String paymentMethod, boolean printDebug, String cashierName, String registerId,
@@ -59,9 +67,9 @@ public class OrderTicket {
 
     private double calculateSubtotal() {
         double subtotal = 0;
-        for (int i = 0; i < items.size(); i++) {
-            MenuItem item = items.get(i);
-            int quantity = quantities.get(i);
+        for (OrderLine line : lines) {
+            MenuItem item = line.item;
+            int quantity = line.quantity;
             double price = item.priceForDay(day, happyHour, campusEvent, couponCode);
             if (item.type.equals("drink")) {
                 if (happyHour) {
@@ -160,12 +168,12 @@ public class OrderTicket {
 
     private String formatReceiptItems() {
         String receiptItems = "";
-        for (int i = 0; i < items.size(); i++) {
-            MenuItem item = items.get(i);
-            int quantity = quantities.get(i);
-            String line = formatReceiptLine(item, quantity);
-            receiptItems = receiptItems + line + "\n";
-            tempLastPrintedLine = line;
+        for (OrderLine orderLine : lines) {
+            MenuItem item = orderLine.item;
+            int quantity = orderLine.quantity;
+            String receiptLine = formatReceiptLine(item, quantity);
+            receiptItems = receiptItems + receiptLine + "\n";
+            tempLastPrintedLine = receiptLine;
         }
         return receiptItems;
     }
@@ -199,9 +207,9 @@ public class OrderTicket {
 
     public String kitchenMessage() {
         String msg = "Kitchen ticket " + ticketNumber + "\n";
-        for (int i = 0; i < items.size(); i++) {
-            MenuItem m = items.get(i);
-            int q = quantities.get(i);
+        for (OrderLine line : lines) {
+            MenuItem m = line.item;
+            int q = line.quantity;
             if (m.type.equals("drink")) {
                 msg = msg + "BAR: " + q + " " + m.name;
                 if (m.size.equals("large")) {
@@ -250,7 +258,7 @@ public class OrderTicket {
                         risky = false;
                     }
                 } else {
-                    if (items.size() > 7 && customer.points < 20) {
+                    if (lines.size() > 7 && customer.points < 20) {
                         risky = true;
                     } else {
                         risky = false;
