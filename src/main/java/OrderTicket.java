@@ -45,18 +45,7 @@ public class OrderTicket {
 
         double deliveryFee = calculateDeliveryFee(rush, street, city, state, zip);
 
-        double serviceFee = 0;
-        if (paymentMethod.equals("credit")) {
-            serviceFee = subtotal * 0.03;
-        } else if (paymentMethod.equals("cash")) {
-            serviceFee = 0;
-        } else if (paymentMethod.equals("mealplan")) {
-            serviceFee = 0.45;
-        } else if (paymentMethod.equals("crypto")) {
-            serviceFee = 8.88;
-        } else {
-            serviceFee = 1.00;
-        }
+        double serviceFee = calculateServiceFee(paymentMethod, subtotal);
 
         double tax = (subtotal + deliveryFee + serviceFee) * GLOBAL_TAX_RATE;
         double total = subtotal + deliveryFee + serviceFee + tax;
@@ -130,6 +119,22 @@ public class OrderTicket {
             deliveryFee = 2.00;
         }
         return deliveryFee;
+    }
+
+    private double calculateServiceFee(String paymentMethod, double subtotal) {
+        double serviceFee = 0;
+        if (paymentMethod.equals("credit")) {
+            serviceFee = subtotal * 0.03;
+        } else if (paymentMethod.equals("cash")) {
+            serviceFee = 0;
+        } else if (paymentMethod.equals("mealplan")) {
+            serviceFee = 0.45;
+        } else if (paymentMethod.equals("crypto")) {
+            serviceFee = 8.88;
+        } else {
+            serviceFee = 1.00;
+        }
+        return serviceFee;
     }
 
     public String printTicket(String paymentMethod, String cashierName, String registerId, boolean rush) {
