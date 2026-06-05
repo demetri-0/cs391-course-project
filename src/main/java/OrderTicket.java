@@ -44,12 +44,12 @@ public class OrderTicket {
         subtotal = applyOrderDiscounts(subtotal);
 
         double deliveryFee = calculateDeliveryFee(rush, street, city, state, zip);
-
         double serviceFee = calculateServiceFee(paymentMethod, subtotal);
-
         double tax = (subtotal + deliveryFee + serviceFee) * GLOBAL_TAX_RATE;
+
         double total = subtotal + deliveryFee + serviceFee + tax;
-        if (printDebug == true) {
+
+        if (printDebug) {
             System.out.println("DEBUG " + cashierName + " " + registerId + " " + subtotal + " " + deliveryFee + " "
                     + serviceFee + " " + tax + " " + total);
         }
