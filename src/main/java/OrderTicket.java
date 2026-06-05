@@ -139,6 +139,16 @@ public class OrderTicket {
 
     public String printTicket(String paymentMethod, String cashierName, String registerId, boolean rush) {
         String receipt = "";
+        receipt = receipt + buildReceiptHeader();
+        receipt = receipt + formatReceiptItems();
+        receipt = receipt + "Total: $" + calcTotal(paymentMethod, false, cashierName, registerId, rush, customer.street,
+                customer.city, customer.state, customer.zip) + "\n";
+        receipt = receipt + "Thanks " + customer.n + "!\n";
+        return receipt;
+    }
+
+    private String buildReceiptHeader() {
+        String receipt = "";
         receipt = receipt + "==== " + GLOBAL_STORE_NAME + " ====\n";
         receipt = receipt + "Ticket: " + ticketNumber + "\n";
         receipt = receipt + "Customer: " + customer.n + "\n";
@@ -146,39 +156,46 @@ public class OrderTicket {
         receipt = receipt + "Address: " + customer.street + ", " + customer.city + ", " + customer.state + " "
                 + customer.zip + "\n";
         receipt = receipt + "Type: " + orderType + "\n";
+        return receipt;
+    }
+
+    private String formatReceiptItems() {
+        String receipt = "";
         for (int i = 0; i < items.size(); i++) {
             MenuItem m = items.get(i);
             int q = quantities.get(i);
-            String line = q + " x " + m.name + " (" + m.type + "/" + m.size + ") @ "
-                    + m.priceForDay(day, happyHour, campusEvent, couponCode);
-            if (m.type.equals("drink")) {
-                if (happyHour == true) {
-                    line = line + " happy-hour";
-                }
-                if (m.vegan == true) {
-                    line = line + " vegan";
-                }
-            } else if (m.type.equals("meal")) {
-                if (m.spicy == true) {
-                    line = line + " spicy";
-                }
-                if (m.vegan == true) {
-                    line = line + " vegan";
-                }
-            } else if (m.type.equals("dessert")) {
-                if (m.seasonal == true) {
-                    line = line + " seasonal";
-                }
-            } else {
-                line = line + " ordinary";
-            }
+            String line = formatReceiptLine(m, q);
             receipt = receipt + line + "\n";
             tempLastPrintedLine = line;
         }
-        receipt = receipt + "Total: $" + calcTotal(paymentMethod, false, cashierName, registerId, rush, customer.street,
-                customer.city, customer.state, customer.zip) + "\n";
-        receipt = receipt + "Thanks " + customer.n + "!\n";
         return receipt;
+    }
+
+    private String formatReceiptLine(MenuItem m, int q) {
+        String line = q + " x " + m.name + " (" + m.type + "/" + m.size + ") @ "
+                + m.priceForDay(day, happyHour, campusEvent, couponCode);
+        if (m.type.equals("drink")) {
+            if (happyHour == true) {
+                line = line + " happy-hour";
+            }
+            if (m.vegan == true) {
+                line = line + " vegan";
+            }
+        } else if (m.type.equals("meal")) {
+            if (m.spicy == true) {
+                line = line + " spicy";
+            }
+            if (m.vegan == true) {
+                line = line + " vegan";
+            }
+        } else if (m.type.equals("dessert")) {
+            if (m.seasonal == true) {
+                line = line + " seasonal";
+            }
+        } else {
+            line = line + " ordinary";
+        }
+        return line;
     }
 
     public String kitchenMessage() {
