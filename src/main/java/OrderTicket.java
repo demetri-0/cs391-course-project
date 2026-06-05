@@ -41,23 +41,7 @@ public class OrderTicket {
     public double calcTotal(String paymentMethod, boolean printDebug, String cashierName, String registerId,
             boolean rush, String street, String city, String state, String zip) {
         double subtotal = calculateSubtotal();
-
-        if (couponCode != null && couponCode.equals("SAVE10")) {
-            subtotal = subtotal - 10;
-        }
-        if (couponCode != null && couponCode.equals("STUDENT5") && customer.isStudent == true) {
-            subtotal = subtotal - 5;
-        }
-        if (customer.loyaltyLevel.equals("gold")) {
-            subtotal = subtotal * 0.90;
-        } else if (customer.loyaltyLevel.equals("silver")) {
-            subtotal = subtotal * 0.95;
-        } else if (customer.loyaltyLevel.equals("bronze")) {
-            subtotal = subtotal * 0.98;
-        }
-        if (subtotal < 0) {
-            subtotal = 0;
-        }
+        subtotal = applyOrderDiscounts(subtotal);
 
         double deliveryFee = 0;
         if (orderType.equals("delivery")) {
@@ -122,6 +106,26 @@ public class OrderTicket {
                 }
             }
             subtotal = subtotal + (price * quantity);
+        }
+        return subtotal;
+    }
+
+    private double applyOrderDiscounts(double subtotal) {
+        if (couponCode != null && couponCode.equals("SAVE10")) {
+            subtotal = subtotal - 10;
+        }
+        if (couponCode != null && couponCode.equals("STUDENT5") && customer.isStudent == true) {
+            subtotal = subtotal - 5;
+        }
+        if (customer.loyaltyLevel.equals("gold")) {
+            subtotal = subtotal * 0.90;
+        } else if (customer.loyaltyLevel.equals("silver")) {
+            subtotal = subtotal * 0.95;
+        } else if (customer.loyaltyLevel.equals("bronze")) {
+            subtotal = subtotal * 0.98;
+        }
+        if (subtotal < 0) {
+            subtotal = 0;
         }
         return subtotal;
     }
