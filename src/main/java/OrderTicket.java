@@ -190,28 +190,15 @@ public class OrderTicket {
     }
 
     public boolean riskyCustomerCheck() {
-        boolean risky = false;
         if (customer.banned == true) {
-            risky = true;
-        } else {
-            if (customer.phone == null || customer.phone.length() < 7) {
-                risky = true;
-            } else {
-                if (customer.email == null || customer.email.indexOf("@") < 0) {
-                    if (orderType.equals("delivery")) {
-                        risky = true;
-                    } else {
-                        risky = false;
-                    }
-                } else {
-                    if (lines.size() > 7 && customer.points < 20) {
-                        risky = true;
-                    } else {
-                        risky = false;
-                    }
-                }
-            }
+            return true;
         }
-        return risky;
+        if (customer.phone == null || customer.phone.length() < 7) {
+            return true;
+        }
+        if ((customer.email == null || !customer.email.contains("@")) && orderType.equals("delivery")) {
+            return true;
+        }
+        return lines.size() > 7 && customer.points < 20;
     }
 }
