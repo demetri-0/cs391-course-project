@@ -171,38 +171,11 @@ public class OrderTicket {
         for (OrderLine orderLine : lines) {
             MenuItem item = orderLine.item;
             int quantity = orderLine.quantity;
-            String receiptLine = formatReceiptLine(item, quantity);
+            String receiptLine = item.receiptLine(quantity, day, happyHour, campusEvent, couponCode);
             receiptItems = receiptItems + receiptLine + "\n";
             tempLastPrintedLine = receiptLine;
         }
         return receiptItems;
-    }
-
-    private String formatReceiptLine(MenuItem item, int quantity) {
-        String line = quantity + " x " + item.name + " (" + item.type + "/" + item.size + ") @ "
-                + item.priceForDay(day, happyHour, campusEvent, couponCode);
-        if ("drink".equals(item.type)) {
-            if (happyHour) {
-                line = line + " happy-hour";
-            }
-            if (item.vegan) {
-                line = line + " vegan";
-            }
-        } else if ("meal".equals(item.type)) {
-            if (item.spicy) {
-                line = line + " spicy";
-            }
-            if (item.vegan) {
-                line = line + " vegan";
-            }
-        } else if ("dessert".equals(item.type)) {
-            if (item.seasonal) {
-                line = line + " seasonal";
-            }
-        } else {
-            line = line + " ordinary";
-        }
-        return line;
     }
 
     public String kitchenMessage() {

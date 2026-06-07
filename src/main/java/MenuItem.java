@@ -74,6 +74,33 @@ public class MenuItem {
         return p;
     }
 
+    public String receiptLine(int quantity, String day, boolean happyHour, boolean campusEvent, String couponCode) {
+        String line = quantity + " x " + name + " (" + type + "/" + size + ") @ "
+                + priceForDay(day, happyHour, campusEvent, couponCode);
+        if ("drink".equals(type)) {
+            if (happyHour) {
+                line = line + " happy-hour";
+            }
+            if (vegan) {
+                line = line + " vegan";
+            }
+        } else if ("meal".equals(type)) {
+            if (spicy) {
+                line = line + " spicy";
+            }
+            if (vegan) {
+                line = line + " vegan";
+            }
+        } else if ("dessert".equals(type)) {
+            if (seasonal) {
+                line = line + " seasonal";
+            }
+        } else {
+            line = line + " ordinary";
+        }
+        return line;
+    }
+
     public String tagLine() {
         String s = "";
         if (type.equals("drink")) {
