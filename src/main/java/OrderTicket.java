@@ -12,30 +12,32 @@ public class OrderTicket {
         }
     }
 
-    public static double GLOBAL_TAX_RATE = 0.0825;
-    public static int GLOBAL_NEXT_NUMBER = 1000;
-    public static String GLOBAL_STORE_NAME = "Campus Spoon";
+    private static final double TAX_RATE = 0.0825;
+    private static final String STORE_NAME = "Campus Spoon";
+    private static int nextNumber = 1000;
 
-    public int ticketNumber;
-    public CustomerProfile customer;
-    private List<OrderLine> lines = new ArrayList<OrderLine>();
-    public String orderType;
-    public String day;
-    public boolean happyHour;
-    public boolean campusEvent;
-    public String couponCode;
-    public boolean paid;
+    private final int ticketNumber;
+    private final CustomerProfile customer;
+    private final List<OrderLine> lines = new ArrayList<OrderLine>();
+    private final String orderType;
+    private final String day;
+    private final boolean happyHour;
+    private final boolean campusEvent;
+    private final String couponCode;
 
     public OrderTicket(CustomerProfile customer, String orderType, String day, boolean happyHour, boolean campusEvent,
             String couponCode) {
-        this.ticketNumber = GLOBAL_NEXT_NUMBER++;
+        this.ticketNumber = nextTicketNumber();
         this.customer = customer;
         this.orderType = orderType;
         this.day = day;
         this.happyHour = happyHour;
         this.campusEvent = campusEvent;
         this.couponCode = couponCode;
-        this.paid = false;
+    }
+
+    private static int nextTicketNumber() {
+        return nextNumber++;
     }
 
     public void add(MenuItem item, int q) {
@@ -49,7 +51,7 @@ public class OrderTicket {
 
         double deliveryFee = calculateDeliveryFee(rush, street, city, state, zip);
         double serviceFee = calculateServiceFee(paymentMethod, subtotal);
-        double tax = (subtotal + deliveryFee + serviceFee) * GLOBAL_TAX_RATE;
+        double tax = (subtotal + deliveryFee + serviceFee) * TAX_RATE;
 
         double total = subtotal + deliveryFee + serviceFee + tax;
 
@@ -137,7 +139,7 @@ public class OrderTicket {
 
     private String buildReceiptHeader() {
         String receipt = "";
-        receipt = receipt + "==== " + GLOBAL_STORE_NAME + " ====\n";
+        receipt = receipt + "==== " + STORE_NAME + " ====\n";
         receipt = receipt + "Ticket: " + ticketNumber + "\n";
         receipt = receipt + "Customer: " + customer.n + "\n";
         receipt = receipt + "Phone: " + customer.phone + "\n";
