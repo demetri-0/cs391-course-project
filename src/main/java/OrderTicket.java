@@ -68,23 +68,8 @@ public class OrderTicket {
     private double calculateSubtotal() {
         double subtotal = 0;
         for (OrderLine line : lines) {
-            MenuItem item = line.item;
-            int quantity = line.quantity;
-            double price = item.priceForDay(day, happyHour, campusEvent, couponCode);
-            if (item.type.equals("drink")) {
-                if (happyHour) {
-                    price = price - 0.15;
-                }
-            } else if (item.type.equals("meal")) {
-                if (quantity >= 3) {
-                    price = price - 0.35;
-                }
-            } else if (item.type.equals("dessert")) {
-                if (customer.loyaltyLevel.equals("gold")) {
-                    price = price - 0.25;
-                }
-            }
-            subtotal = subtotal + (price * quantity);
+            double price = line.item.priceForOrder(line.quantity, day, happyHour, campusEvent, couponCode, customer);
+            subtotal = subtotal + (price * line.quantity);
         }
         return subtotal;
     }

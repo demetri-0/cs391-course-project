@@ -74,6 +74,25 @@ public class MenuItem {
         return p;
     }
 
+    public double priceForOrder(int quantity, String day, boolean happyHour, boolean campusEvent, String couponCode,
+            CustomerProfile customer) {
+        double p = priceForDay(day, happyHour, campusEvent, couponCode);
+        if ("drink".equals(type)) {
+            if (happyHour) {
+                p = p - 0.15;
+            }
+        } else if ("meal".equals(type)) {
+            if (quantity >= 3) {
+                p = p - 0.35;
+            }
+        } else if ("dessert".equals(type)) {
+            if (customer.loyaltyLevel.equals("gold")) {
+                p = p - 0.25;
+            }
+        }
+        return Math.max(p, 0);
+    }
+
     public String receiptLine(int quantity, String day, boolean happyHour, boolean campusEvent, String couponCode) {
         String line = quantity + " x " + name + " (" + type + "/" + size + ") @ "
                 + priceForDay(day, happyHour, campusEvent, couponCode);
