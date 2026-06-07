@@ -25,9 +25,6 @@ public class OrderTicket {
     public boolean campusEvent;
     public String couponCode;
     public boolean paid;
-    public String tempLastPrintedLine;
-    public double tempRiskScore;
-    public String futureKitchenRobotInstruction;
 
     public OrderTicket(CustomerProfile customer, String orderType, String day, boolean happyHour, boolean campusEvent,
             String couponCode) {
@@ -39,7 +36,6 @@ public class OrderTicket {
         this.campusEvent = campusEvent;
         this.couponCode = couponCode;
         this.paid = false;
-        this.futureKitchenRobotInstruction = "";
     }
 
     public void add(MenuItem item, int q) {
@@ -61,7 +57,6 @@ public class OrderTicket {
             System.out.println("DEBUG " + cashierName + " " + registerId + " " + subtotal + " " + deliveryFee + " "
                     + serviceFee + " " + tax + " " + total);
         }
-        tempRiskScore = total;
         return Math.round(total * 100.0) / 100.0;
     }
 
@@ -158,7 +153,6 @@ public class OrderTicket {
             int quantity = orderLine.quantity;
             String receiptLine = item.receiptLine(quantity, day, happyHour, campusEvent, couponCode);
             receiptItems = receiptItems + receiptLine + "\n";
-            tempLastPrintedLine = receiptLine;
         }
         return receiptItems;
     }

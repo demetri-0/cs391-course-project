@@ -30,8 +30,8 @@ public class RefactoringProjectTests {
         assertTrue(receipt.contains("==== Campus Spoon ===="));
         assertTrue(receipt.contains("Customer: Mina Patel"));
         assertTrue(receipt.contains("2 x Fire Noodles"));
+        assertTrue(receipt.contains("2 x Curly Fries (side/medium) @ 4.5 ordinary"));
         assertTrue(receipt.contains("Total: $52.18"));
-        assertEquals("2 x Curly Fries (side/medium) @ 4.5 ordinary", ticket.tempLastPrintedLine);
     }
 
     @Test
