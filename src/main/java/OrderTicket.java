@@ -181,34 +181,7 @@ public class OrderTicket {
     public String kitchenMessage() {
         String msg = "Kitchen ticket " + ticketNumber + "\n";
         for (OrderLine line : lines) {
-            MenuItem m = line.item;
-            int q = line.quantity;
-            if (m.type.equals("drink")) {
-                msg = msg + "BAR: " + q + " " + m.name;
-                if (m.size.equals("large")) {
-                    msg = msg + " big cup";
-                } else if (m.size.equals("small")) {
-                    msg = msg + " tiny cup";
-                } else {
-                    msg = msg + " normal cup";
-                }
-            } else if (m.type.equals("meal")) {
-                msg = msg + "GRILL: " + q + " " + m.name;
-                if (m.spicy == true) {
-                    msg = msg + " with warning sticker";
-                }
-                if (m.vegan == true) {
-                    msg = msg + " use clean pan";
-                }
-            } else if (m.type.equals("dessert")) {
-                msg = msg + "BAKERY: " + q + " " + m.name;
-                if (m.seasonal == true) {
-                    msg = msg + " from seasonal shelf";
-                }
-            } else {
-                msg = msg + "MISC: " + q + " " + m.name;
-            }
-            msg = msg + "\n";
+            msg = msg + line.item.kitchenLine(line.quantity) + "\n";
         }
         if (orderType.equals("delivery")) {
             msg = msg + "Bag for delivery to " + customer.getFullAddress() + "\n";

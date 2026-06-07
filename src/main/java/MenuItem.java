@@ -106,6 +106,50 @@ public class MenuItem {
         return tags;
     }
 
+    public String kitchenLine(int quantity) {
+        if ("drink".equals(type)) {
+            return drinkKitchenLine(quantity);
+        }
+        if ("meal".equals(type)) {
+            return mealKitchenLine(quantity);
+        }
+        if ("dessert".equals(type)) {
+            return dessertKitchenLine(quantity);
+        }
+        return "MISC: " + quantity + " " + name;
+    }
+
+    private String drinkKitchenLine(int quantity) {
+        String line = "BAR: " + quantity + " " + name;
+        if ("large".equals(size)) {
+            line = line + " big cup";
+        } else if ("small".equals(size)) {
+            line = line + " tiny cup";
+        } else {
+            line = line + " normal cup";
+        }
+        return line;
+    }
+
+    private String mealKitchenLine(int quantity) {
+        String line = "GRILL: " + quantity + " " + name;
+        if (spicy == true) {
+            line = line + " with warning sticker";
+        }
+        if (vegan == true) {
+            line = line + " use clean pan";
+        }
+        return line;
+    }
+
+    private String dessertKitchenLine(int quantity) {
+        String line = "BAKERY: " + quantity + " " + name;
+        if (seasonal == true) {
+            line = line + " from seasonal shelf";
+        }
+        return line;
+    }
+
     public String tagLine() {
         String s = "";
         if (type.equals("drink")) {
