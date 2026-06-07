@@ -19,7 +19,7 @@ public class Main {
         OrderReporter reporter = new OrderReporter(ticket);
         System.out.println(reporter.makeReceipt("credit", "Sam", "REG-2", true));
         System.out.println(reporter.makeKitchenMessage());
-        System.out.println("Needs manager review? " + reporter.isScary());
+        System.out.println("Needs manager review? " + reporter.needsManagerReview());
 
         CustomerProfile c2 = new CustomerProfile("Jay Wu", "123", "jay.example.com", "9", "Q", "Massachusetts",
                 "9", "none", 3, false, false, false);
@@ -27,6 +27,6 @@ public class Main {
         questionable.add(new MenuItem("D77", "Cola", "drink", 2.95, 150, false, true, false, "large"), 1);
         OrderReporter secondReporter = new OrderReporter(questionable);
         System.out.println(secondReporter.makeReceipt("crypto", "Lee", "REG-4", false));
-        System.out.println("Needs manager review? " + secondReporter.isScary());
+        System.out.println("Needs manager review? " + secondReporter.needsManagerReview());
     }
 }

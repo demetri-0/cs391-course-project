@@ -1,5 +1,5 @@
 public class OrderReporter {
-    private OrderTicket ticket;
+    private final OrderTicket ticket;
 
     public OrderReporter(OrderTicket ticket) {
         this.ticket = ticket;
@@ -13,13 +13,8 @@ public class OrderReporter {
         return ticket.kitchenMessage();
     }
 
-    public boolean isScary() {
+    public boolean needsManagerReview() {
         return ticket.riskyCustomerCheck();
     }
 
-    public void printSummaryTwiceForNoGoodReason(String paymentMethod, String cashierName, String registerId,
-            boolean rush) {
-        System.out.println(ticket.printTicket(paymentMethod, cashierName, registerId, rush));
-        System.out.println(ticket.printTicket(paymentMethod, cashierName, registerId, rush));
-    }
 }
