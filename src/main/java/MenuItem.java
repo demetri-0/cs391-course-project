@@ -81,12 +81,7 @@ public class MenuItem {
         if (happyHour) {
             updatedPrice = updatedPrice - 1.00;
         }
-        if ("large".equals(size)) {
-            updatedPrice = updatedPrice + 1.25;
-        } else if ("small".equals(size)) {
-            updatedPrice = updatedPrice - 0.50;
-        }
-        return updatedPrice;
+        return applySizeAdjustment(updatedPrice, 1.25, -0.50);
     }
 
     private double applyMealPricing(double currentPrice, String day, boolean campusEvent) {
@@ -97,12 +92,7 @@ public class MenuItem {
         if (spicy && campusEvent) {
             updatedPrice = updatedPrice - 0.75;
         }
-        if ("large".equals(size)) {
-            updatedPrice = updatedPrice + 2.00;
-        } else if ("small".equals(size)) {
-            updatedPrice = updatedPrice - 1.00;
-        }
-        return updatedPrice;
+        return applySizeAdjustment(updatedPrice, 2.00, -1.00);
     }
 
     private double applyDessertPricing(double currentPrice, String day) {
@@ -126,6 +116,16 @@ public class MenuItem {
 
     private double applyDefaultPricing(double currentPrice) {
         return currentPrice + 0.25;
+    }
+
+    private double applySizeAdjustment(double currentPrice, double largeAdjustment, double smallAdjustment) {
+        if ("large".equals(size)) {
+            return currentPrice + largeAdjustment;
+        }
+        if ("small".equals(size)) {
+            return currentPrice + smallAdjustment;
+        }
+        return currentPrice;
     }
 
     private double applyCoupon(double currentPrice, String couponCode) {
