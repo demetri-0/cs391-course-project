@@ -60,13 +60,13 @@ public class MenuItem {
 
     public double priceForDay(String day, boolean happyHour, boolean campusEvent, String couponCode) {
         double p = price;
-        if (type.equals("drink")) {
+        if ("drink".equals(type)) {
             p = applyDrinkPricing(p, happyHour);
-        } else if (type.equals("meal")) {
+        } else if ("meal".equals(type)) {
             p = applyMealPricing(p, day, campusEvent);
-        } else if (type.equals("dessert")) {
+        } else if ("dessert".equals(type)) {
             p = applyDessertPricing(p, day);
-        } else if (type.equals("side")) {
+        } else if ("side".equals(type)) {
             p = applySidePricing(p, day);
         } else {
             p = applyDefaultPricing(p);
@@ -78,30 +78,28 @@ public class MenuItem {
 
     private double applyDrinkPricing(double currentPrice, boolean happyHour) {
         double updatedPrice = currentPrice;
-        if (happyHour == true) {
+        if (happyHour) {
             updatedPrice = updatedPrice - 1.00;
         }
-        if (size.equals("large")) {
+        if ("large".equals(size)) {
             updatedPrice = updatedPrice + 1.25;
-        } else if (size.equals("small")) {
+        } else if ("small".equals(size)) {
             updatedPrice = updatedPrice - 0.50;
-        } else {
-            updatedPrice = updatedPrice + 0.00;
         }
         return updatedPrice;
     }
 
     private double applyMealPricing(double currentPrice, String day, boolean campusEvent) {
         double updatedPrice = currentPrice;
-        if (day.equals("Friday")) {
+        if ("Friday".equals(day)) {
             updatedPrice = updatedPrice + 0.50;
         }
-        if (spicy == true && campusEvent == true) {
+        if (spicy && campusEvent) {
             updatedPrice = updatedPrice - 0.75;
         }
-        if (size.equals("large")) {
+        if ("large".equals(size)) {
             updatedPrice = updatedPrice + 2.00;
-        } else if (size.equals("small")) {
+        } else if ("small".equals(size)) {
             updatedPrice = updatedPrice - 1.00;
         }
         return updatedPrice;
@@ -109,10 +107,10 @@ public class MenuItem {
 
     private double applyDessertPricing(double currentPrice, String day) {
         double updatedPrice = currentPrice;
-        if (day.equals("Monday")) {
+        if ("Monday".equals(day)) {
             updatedPrice = updatedPrice - 0.80;
         }
-        if (seasonal == true) {
+        if (seasonal) {
             updatedPrice = updatedPrice + 1.10;
         }
         return updatedPrice;
@@ -120,7 +118,7 @@ public class MenuItem {
 
     private double applySidePricing(double currentPrice, String day) {
         double updatedPrice = currentPrice;
-        if (day.equals("Wednesday")) {
+        if ("Wednesday".equals(day)) {
             updatedPrice = updatedPrice - 0.40;
         }
         return updatedPrice;
@@ -132,10 +130,10 @@ public class MenuItem {
 
     private double applyCoupon(double currentPrice, String couponCode) {
         double updatedPrice = currentPrice;
-        if (couponCode != null && couponCode.equals("SAVE2")) {
+        if ("SAVE2".equals(couponCode)) {
             updatedPrice = updatedPrice - 2.00;
         }
-        if (couponCode != null && couponCode.equals("HALFOFFDRINK") && type.equals("drink")) {
+        if ("HALFOFFDRINK".equals(couponCode) && "drink".equals(type)) {
             updatedPrice = updatedPrice * 0.5;
         }
         return updatedPrice;
@@ -219,10 +217,10 @@ public class MenuItem {
 
     private String mealKitchenLine(int quantity) {
         String line = "GRILL: " + quantity + " " + name;
-        if (spicy == true) {
+        if (spicy) {
             line = line + " with warning sticker";
         }
-        if (vegan == true) {
+        if (vegan) {
             line = line + " use clean pan";
         }
         return line;
@@ -230,7 +228,7 @@ public class MenuItem {
 
     private String dessertKitchenLine(int quantity) {
         String line = "BAKERY: " + quantity + " " + name;
-        if (seasonal == true) {
+        if (seasonal) {
             line = line + " from seasonal shelf";
         }
         return line;
@@ -238,25 +236,25 @@ public class MenuItem {
 
     public String tagLine() {
         String s = "";
-        if (type.equals("drink")) {
+        if ("drink".equals(type)) {
             s = "Sip: " + name;
-            if (spicy == true) {
+            if (spicy) {
                 s = s + " spicy";
             }
-            if (vegan == true) {
+            if (vegan) {
                 s = s + " vegan";
             }
-        } else if (type.equals("meal")) {
+        } else if ("meal".equals(type)) {
             s = "Plate: " + name;
-            if (spicy == true) {
+            if (spicy) {
                 s = s + " spicy";
             }
-            if (vegan == true) {
+            if (vegan) {
                 s = s + " vegan";
             }
-        } else if (type.equals("dessert")) {
+        } else if ("dessert".equals(type)) {
             s = "Sweet: " + name;
-            if (seasonal == true) {
+            if (seasonal) {
                 s = s + " seasonal";
             }
         } else {
@@ -266,7 +264,7 @@ public class MenuItem {
     }
 
     public boolean isMealThing() {
-        if (type.equals("meal")) {
+        if ("meal".equals(type)) {
             return true;
         }
         return false;
