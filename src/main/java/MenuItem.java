@@ -170,24 +170,37 @@ public class MenuItem {
             if (happyHour) {
                 tags = tags + " happy-hour";
             }
-            if (vegan) {
-                tags = tags + " vegan";
-            }
+            tags = appendVeganTag(tags);
         } else if ("meal".equals(type)) {
-            if (spicy) {
-                tags = tags + " spicy";
-            }
-            if (vegan) {
-                tags = tags + " vegan";
-            }
+            tags = appendSpicyAndVeganTags(tags);
         } else if ("dessert".equals(type)) {
-            if (seasonal) {
-                tags = tags + " seasonal";
-            }
+            tags = appendSeasonalTag(tags);
         } else {
             tags = tags + " ordinary";
         }
         return tags;
+    }
+
+    private String appendSpicyAndVeganTags(String text) {
+        String updatedText = text;
+        if (spicy) {
+            updatedText = updatedText + " spicy";
+        }
+        return appendVeganTag(updatedText);
+    }
+
+    private String appendVeganTag(String text) {
+        if (vegan) {
+            return text + " vegan";
+        }
+        return text;
+    }
+
+    private String appendSeasonalTag(String text) {
+        if (seasonal) {
+            return text + " seasonal";
+        }
+        return text;
     }
 
     public String kitchenLine(int quantity) {
@@ -238,25 +251,13 @@ public class MenuItem {
         String s = "";
         if ("drink".equals(type)) {
             s = "Sip: " + name;
-            if (spicy) {
-                s = s + " spicy";
-            }
-            if (vegan) {
-                s = s + " vegan";
-            }
+            s = appendSpicyAndVeganTags(s);
         } else if ("meal".equals(type)) {
             s = "Plate: " + name;
-            if (spicy) {
-                s = s + " spicy";
-            }
-            if (vegan) {
-                s = s + " vegan";
-            }
+            s = appendSpicyAndVeganTags(s);
         } else if ("dessert".equals(type)) {
             s = "Sweet: " + name;
-            if (seasonal) {
-                s = s + " seasonal";
-            }
+            s = appendSeasonalTag(s);
         } else {
             s = "Item: " + name;
         }
