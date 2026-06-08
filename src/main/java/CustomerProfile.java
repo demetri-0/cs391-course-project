@@ -5,10 +5,7 @@ public class CustomerProfile {
     private String name;
     private String phone;
     private String email;
-    private String street;
-    private String city;
-    private String state;
-    private String zip;
+    private Address address;
     private String loyaltyLevel;
     private int points;
     private boolean isStudent;
@@ -21,10 +18,7 @@ public class CustomerProfile {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
+        this.address = new Address(street, city, state, zip);
         this.loyaltyLevel = loyaltyLevel;
         this.points = points;
         this.isStudent = isStudent;
@@ -33,7 +27,7 @@ public class CustomerProfile {
     }
 
     public String getFullAddress() {
-        return street + ", " + city + ", " + state + " " + zip;
+        return address.getFullAddress();
     }
 
     public void addNote(String note) {
@@ -45,10 +39,7 @@ public class CustomerProfile {
     }
 
     public void updateAddress(String street, String city, String state, String zip) {
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
+        this.address = new Address(street, city, state, zip);
     }
 
     public String getName() {
@@ -76,35 +67,35 @@ public class CustomerProfile {
     }
 
     public String getStreet() {
-        return street;
+        return address.getStreet();
     }
 
     public void setStreet(String street) {
-        this.street = street;
+        address.setStreet(street);
     }
 
     public String getCity() {
-        return city;
+        return address.getCity();
     }
 
     public void setCity(String city) {
-        this.city = city;
+        address.setCity(city);
     }
 
     public String getState() {
-        return state;
+        return address.getState();
     }
 
     public void setState(String state) {
-        this.state = state;
+        address.setState(state);
     }
 
     public String getZip() {
-        return zip;
+        return address.getZip();
     }
 
     public void setZip(String zip) {
-        this.zip = zip;
+        address.setZip(zip);
     }
 
     public String getLoyaltyLevel() {
