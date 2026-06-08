@@ -2,23 +2,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerProfile {
-    public String n;
-    public String phone;
-    public String email;
-    public String street;
-    public String city;
-    public String state;
-    public String zip;
-    public String loyaltyLevel;
-    public int points;
-    public boolean isStudent;
-    public boolean wantsTexts;
-    public boolean banned;
-    public List<String> notes = new ArrayList<String>();
+    private String name;
+    private String phone;
+    private String email;
+    private String street;
+    private String city;
+    private String state;
+    private String zip;
+    private String loyaltyLevel;
+    private int points;
+    private boolean isStudent;
+    private boolean wantsTexts;
+    private boolean banned;
+    private final List<String> notes = new ArrayList<String>();
 
-    public CustomerProfile(String n, String phone, String email, String street, String city, String state, String zip,
+    public CustomerProfile(String name, String phone, String email, String street, String city, String state, String zip,
             String loyaltyLevel, int points, boolean isStudent, boolean wantsTexts, boolean banned) {
-        this.n = n;
+        this.name = name;
         this.phone = phone;
         this.email = email;
         this.street = street;
@@ -41,7 +41,7 @@ public class CustomerProfile {
     }
 
     public String tiny() {
-        return n + " / " + phone;
+        return name + " / " + phone;
     }
 
     public void updateAddress(String street, String city, String state, String zip) {
@@ -51,12 +51,12 @@ public class CustomerProfile {
         this.zip = zip;
     }
 
-    public String getN() {
-        return n;
+    public String getName() {
+        return name;
     }
 
-    public void setN(String n) {
-        this.n = n;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {

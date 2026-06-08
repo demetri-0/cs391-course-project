@@ -151,7 +151,7 @@ public class MenuItem {
                 orderPrice = orderPrice - 0.35;
             }
         } else if ("dessert".equals(type)) {
-            if (customer.loyaltyLevel.equals("gold")) {
+            if ("gold".equals(customer.getLoyaltyLevel())) {
                 orderPrice = orderPrice - 0.25;
             }
         }

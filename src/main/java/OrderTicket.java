@@ -75,14 +75,14 @@ public class OrderTicket {
         if ("SAVE10".equals(couponCode)) {
             subtotal = subtotal - 10;
         }
-        if ("STUDENT5".equals(couponCode) && customer.isStudent) {
+        if ("STUDENT5".equals(couponCode) && customer.isStudent()) {
             subtotal = subtotal - 5;
         }
-        if (customer.loyaltyLevel.equals("gold")) {
+        if ("gold".equals(customer.getLoyaltyLevel())) {
             subtotal = subtotal * 0.90;
-        } else if (customer.loyaltyLevel.equals("silver")) {
+        } else if ("silver".equals(customer.getLoyaltyLevel())) {
             subtotal = subtotal * 0.95;
-        } else if (customer.loyaltyLevel.equals("bronze")) {
+        } else if ("bronze".equals(customer.getLoyaltyLevel())) {
             subtotal = subtotal * 0.98;
         }
         return Math.max(subtotal, 0);
@@ -131,9 +131,9 @@ public class OrderTicket {
         String receipt = "";
         receipt = receipt + buildReceiptHeader();
         receipt = receipt + formatReceiptItems();
-        receipt = receipt + "Total: $" + calcTotal(paymentMethod, false, cashierName, registerId, rush, customer.street,
-                customer.city, customer.state, customer.zip) + "\n";
-        receipt = receipt + "Thanks " + customer.n + "!\n";
+        receipt = receipt + "Total: $" + calcTotal(paymentMethod, false, cashierName, registerId, rush,
+                customer.getStreet(), customer.getCity(), customer.getState(), customer.getZip()) + "\n";
+        receipt = receipt + "Thanks " + customer.getName() + "!\n";
         return receipt;
     }
 
@@ -141,8 +141,8 @@ public class OrderTicket {
         String receipt = "";
         receipt = receipt + "==== " + STORE_NAME + " ====\n";
         receipt = receipt + "Ticket: " + ticketNumber + "\n";
-        receipt = receipt + "Customer: " + customer.n + "\n";
-        receipt = receipt + "Phone: " + customer.phone + "\n";
+        receipt = receipt + "Customer: " + customer.getName() + "\n";
+        receipt = receipt + "Phone: " + customer.getPhone() + "\n";
         receipt = receipt + "Address: " + customer.getFullAddress() + "\n";
         receipt = receipt + "Type: " + orderType + "\n";
         return receipt;
@@ -171,15 +171,15 @@ public class OrderTicket {
     }
 
     public boolean riskyCustomerCheck() {
-        if (customer.banned == true) {
+        if (customer.isBanned()) {
             return true;
         }
-        if (customer.phone == null || customer.phone.length() < 7) {
+        if (customer.getPhone() == null || customer.getPhone().length() < 7) {
             return true;
         }
-        if ((customer.email == null || !customer.email.contains("@")) && orderType.equals("delivery")) {
+        if ((customer.getEmail() == null || !customer.getEmail().contains("@")) && orderType.equals("delivery")) {
             return true;
         }
-        return lines.size() > 7 && customer.points < 20;
+        return lines.size() > 7 && customer.getPoints() < 20;
     }
 }

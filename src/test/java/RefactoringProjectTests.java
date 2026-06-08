@@ -22,8 +22,8 @@ public class RefactoringProjectTests {
         CustomerProfile customer = sampleCustomer();
         OrderTicket ticket = sampleOrder(customer);
 
-        double total = ticket.calcTotal("credit", false, "Sam", "REG-2", true, customer.street, customer.city,
-                customer.state, customer.zip);
+        double total = ticket.calcTotal("credit", false, "Sam", "REG-2", true, customer.getStreet(),
+                customer.getCity(), customer.getState(), customer.getZip());
         assertEquals(52.18, total, 0.001);
 
         String receipt = ticket.printTicket("credit", "Sam", "REG-2", true);
@@ -56,7 +56,7 @@ public class RefactoringProjectTests {
         questionable.add(new MenuItem("D77", "Cola", "drink", 2.95, 150, false, true, false, "large"), 1);
         assertTrue(questionable.riskyCustomerCheck());
 
-        badContactCustomer.banned = true;
+        badContactCustomer.setBanned(true);
         assertTrue(questionable.riskyCustomerCheck());
     }
 
