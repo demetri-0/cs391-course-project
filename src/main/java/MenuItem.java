@@ -59,21 +59,21 @@ public class MenuItem {
     }
 
     public double priceForDay(String day, boolean happyHour, boolean campusEvent, String couponCode) {
-        double p = price;
+        double adjustedPrice = price;
         if ("drink".equals(type)) {
-            p = applyDrinkPricing(p, happyHour);
+            adjustedPrice = applyDrinkPricing(adjustedPrice, happyHour);
         } else if ("meal".equals(type)) {
-            p = applyMealPricing(p, day, campusEvent);
+            adjustedPrice = applyMealPricing(adjustedPrice, day, campusEvent);
         } else if ("dessert".equals(type)) {
-            p = applyDessertPricing(p, day);
+            adjustedPrice = applyDessertPricing(adjustedPrice, day);
         } else if ("side".equals(type)) {
-            p = applySidePricing(p, day);
+            adjustedPrice = applySidePricing(adjustedPrice, day);
         } else {
-            p = applyDefaultPricing(p);
+            adjustedPrice = applyDefaultPricing(adjustedPrice);
         }
 
-        p = applyCoupon(p, couponCode);
-        return Math.max(p, 0);
+        adjustedPrice = applyCoupon(adjustedPrice, couponCode);
+        return Math.max(adjustedPrice, 0);
     }
 
     private double applyDrinkPricing(double currentPrice, boolean happyHour) {
@@ -141,44 +141,44 @@ public class MenuItem {
 
     public double priceForOrder(int quantity, String day, boolean happyHour, boolean campusEvent, String couponCode,
             CustomerProfile customer) {
-        double p = priceForDay(day, happyHour, campusEvent, couponCode);
+        double orderPrice = priceForDay(day, happyHour, campusEvent, couponCode);
         if ("drink".equals(type)) {
             if (happyHour) {
-                p = p - 0.15;
+                orderPrice = orderPrice - 0.15;
             }
         } else if ("meal".equals(type)) {
             if (quantity >= 3) {
-                p = p - 0.35;
+                orderPrice = orderPrice - 0.35;
             }
         } else if ("dessert".equals(type)) {
             if (customer.loyaltyLevel.equals("gold")) {
-                p = p - 0.25;
+                orderPrice = orderPrice - 0.25;
             }
         }
-        return Math.max(p, 0);
+        return Math.max(orderPrice, 0);
     }
 
     public String receiptLine(int quantity, String day, boolean happyHour, boolean campusEvent, String couponCode) {
-        String line = quantity + " x " + name + " (" + type + "/" + size + ") @ "
+        String receiptLineText = quantity + " x " + name + " (" + type + "/" + size + ") @ "
                 + priceForDay(day, happyHour, campusEvent, couponCode);
-        return line + receiptTags(happyHour);
+        return receiptLineText + buildReceiptTags(happyHour);
     }
 
-    private String receiptTags(boolean happyHour) {
-        String tags = "";
+    private String buildReceiptTags(boolean happyHour) {
+        String receiptTags = "";
         if ("drink".equals(type)) {
             if (happyHour) {
-                tags = tags + " happy-hour";
+                receiptTags = receiptTags + " happy-hour";
             }
-            tags = appendVeganTag(tags);
+            receiptTags = appendVeganTagIfNeeded(receiptTags);
         } else if ("meal".equals(type)) {
-            tags = appendSpicyAndVeganTags(tags);
+            receiptTags = appendSpicyAndVeganTags(receiptTags);
         } else if ("dessert".equals(type)) {
-            tags = appendSeasonalTag(tags);
+            receiptTags = appendSeasonalTagIfNeeded(receiptTags);
         } else {
-            tags = tags + " ordinary";
+            receiptTags = receiptTags + " ordinary";
         }
-        return tags;
+        return receiptTags;
     }
 
     private String appendSpicyAndVeganTags(String text) {
@@ -186,17 +186,17 @@ public class MenuItem {
         if (spicy) {
             updatedText = updatedText + " spicy";
         }
-        return appendVeganTag(updatedText);
+        return appendVeganTagIfNeeded(updatedText);
     }
 
-    private String appendVeganTag(String text) {
+    private String appendVeganTagIfNeeded(String text) {
         if (vegan) {
             return text + " vegan";
         }
         return text;
     }
 
-    private String appendSeasonalTag(String text) {
+    private String appendSeasonalTagIfNeeded(String text) {
         if (seasonal) {
             return text + " seasonal";
         }
@@ -217,51 +217,51 @@ public class MenuItem {
     }
 
     private String drinkKitchenLine(int quantity) {
-        String line = "BAR: " + quantity + " " + name;
+        String kitchenLineText = "BAR: " + quantity + " " + name;
         if ("large".equals(size)) {
-            line = line + " big cup";
+            kitchenLineText = kitchenLineText + " big cup";
         } else if ("small".equals(size)) {
-            line = line + " tiny cup";
+            kitchenLineText = kitchenLineText + " tiny cup";
         } else {
-            line = line + " normal cup";
+            kitchenLineText = kitchenLineText + " normal cup";
         }
-        return line;
+        return kitchenLineText;
     }
 
     private String mealKitchenLine(int quantity) {
-        String line = "GRILL: " + quantity + " " + name;
+        String kitchenLineText = "GRILL: " + quantity + " " + name;
         if (spicy) {
-            line = line + " with warning sticker";
+            kitchenLineText = kitchenLineText + " with warning sticker";
         }
         if (vegan) {
-            line = line + " use clean pan";
+            kitchenLineText = kitchenLineText + " use clean pan";
         }
-        return line;
+        return kitchenLineText;
     }
 
     private String dessertKitchenLine(int quantity) {
-        String line = "BAKERY: " + quantity + " " + name;
+        String kitchenLineText = "BAKERY: " + quantity + " " + name;
         if (seasonal) {
-            line = line + " from seasonal shelf";
+            kitchenLineText = kitchenLineText + " from seasonal shelf";
         }
-        return line;
+        return kitchenLineText;
     }
 
     public String tagLine() {
-        String s = "";
+        String tagLineText = "";
         if ("drink".equals(type)) {
-            s = "Sip: " + name;
-            s = appendSpicyAndVeganTags(s);
+            tagLineText = "Sip: " + name;
+            tagLineText = appendSpicyAndVeganTags(tagLineText);
         } else if ("meal".equals(type)) {
-            s = "Plate: " + name;
-            s = appendSpicyAndVeganTags(s);
+            tagLineText = "Plate: " + name;
+            tagLineText = appendSpicyAndVeganTags(tagLineText);
         } else if ("dessert".equals(type)) {
-            s = "Sweet: " + name;
-            s = appendSeasonalTag(s);
+            tagLineText = "Sweet: " + name;
+            tagLineText = appendSeasonalTagIfNeeded(tagLineText);
         } else {
-            s = "Item: " + name;
+            tagLineText = "Item: " + name;
         }
-        return s;
+        return tagLineText;
     }
 
 }
