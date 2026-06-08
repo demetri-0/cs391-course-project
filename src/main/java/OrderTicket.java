@@ -78,11 +78,11 @@ public class OrderTicket {
         if ("STUDENT5".equals(couponCode) && customer.isStudent()) {
             subtotal = subtotal - 5;
         }
-        if ("gold".equals(customer.getLoyaltyLevel())) {
+        if (customer.isGoldMember()) {
             subtotal = subtotal * 0.90;
-        } else if ("silver".equals(customer.getLoyaltyLevel())) {
+        } else if (customer.isSilverMember()) {
             subtotal = subtotal * 0.95;
-        } else if ("bronze".equals(customer.getLoyaltyLevel())) {
+        } else if (customer.isBronzeMember()) {
             subtotal = subtotal * 0.98;
         }
         return Math.max(subtotal, 0);
@@ -143,7 +143,7 @@ public class OrderTicket {
         receipt = receipt + "==== " + STORE_NAME + " ====\n";
         receipt = receipt + "Ticket: " + ticketNumber + "\n";
         receipt = receipt + "Customer: " + customer.getName() + "\n";
-        receipt = receipt + "Phone: " + customer.getPhone() + "\n";
+        receipt = receipt + "Phone: " + customer.getContactInfo().getPhone() + "\n";
         receipt = receipt + "Address: " + customer.getFullAddress() + "\n";
         receipt = receipt + "Type: " + orderType + "\n";
         return receipt;
@@ -175,10 +175,11 @@ public class OrderTicket {
         if (customer.isBanned()) {
             return true;
         }
-        if (customer.getPhone() == null || customer.getPhone().length() < 7) {
+        ContactInfo contactInfo = customer.getContactInfo();
+        if (contactInfo.getPhone() == null || contactInfo.getPhone().length() < 7) {
             return true;
         }
-        if ((customer.getEmail() == null || !customer.getEmail().contains("@")) && orderType.equals("delivery")) {
+        if ((contactInfo.getEmail() == null || !contactInfo.getEmail().contains("@")) && orderType.equals("delivery")) {
             return true;
         }
         return lines.size() > 7 && customer.getPoints() < 20;

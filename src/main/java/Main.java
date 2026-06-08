@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        CustomerProfile c = new CustomerProfile("Mina Patel", "5551234567", "mina@example.com",
+        CustomerProfile c = new CustomerProfile("Mina Patel", new ContactInfo("5551234567", "mina@example.com"),
                 new Address("17 College Ave", "Boston", "MA", "02118"), "gold", 140, true, true, false);
         c.addNote("Usually asks for extra napkins");
         c.addNote("Do not ring doorbell during evening deliveries");
@@ -21,7 +21,7 @@ public class Main {
         System.out.println(reporter.makeKitchenMessage());
         System.out.println("Needs manager review? " + reporter.needsManagerReview());
 
-        CustomerProfile c2 = new CustomerProfile("Jay Wu", "123", "jay.example.com",
+        CustomerProfile c2 = new CustomerProfile("Jay Wu", new ContactInfo("123", "jay.example.com"),
                 new Address("9", "Q", "Massachusetts", "9"), "none", 3, false, false, false);
         OrderTicket questionable = new OrderTicket(c2, "delivery", "Monday", false, false, "SAVE2");
         questionable.add(new MenuItem("D77", "Cola", "drink", 2.95, 150, false, true, false, "large"), 1);

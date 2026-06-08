@@ -3,8 +3,7 @@ import java.util.List;
 
 public class CustomerProfile {
     private String name;
-    private String phone;
-    private String email;
+    private ContactInfo contactInfo;
     private Address address;
     private String loyaltyLevel;
     private int points;
@@ -13,11 +12,10 @@ public class CustomerProfile {
     private boolean banned;
     private final List<String> notes = new ArrayList<String>();
 
-    public CustomerProfile(String name, String phone, String email, Address address,
+    public CustomerProfile(String name, ContactInfo contactInfo, Address address,
             String loyaltyLevel, int points, boolean isStudent, boolean wantsTexts, boolean banned) {
         this.name = name;
-        this.phone = phone;
-        this.email = email;
+        this.contactInfo = contactInfo;
         this.address = address;
         this.loyaltyLevel = loyaltyLevel;
         this.points = points;
@@ -35,7 +33,7 @@ public class CustomerProfile {
     }
 
     public String tiny() {
-        return name + " / " + phone;
+        return name + " / " + contactInfo.getPhone();
     }
 
     public Address getAddress() {
@@ -46,6 +44,14 @@ public class CustomerProfile {
         this.address = address;
     }
 
+    public ContactInfo getContactInfo() {
+        return contactInfo;
+    }
+
+    public void updateContactInfo(ContactInfo contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
     public String getName() {
         return name;
     }
@@ -54,28 +60,24 @@ public class CustomerProfile {
         this.name = name;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getLoyaltyLevel() {
         return loyaltyLevel;
     }
 
     public void setLoyaltyLevel(String loyaltyLevel) {
         this.loyaltyLevel = loyaltyLevel;
+    }
+
+    public boolean isGoldMember() {
+        return "gold".equals(loyaltyLevel);
+    }
+
+    public boolean isSilverMember() {
+        return "silver".equals(loyaltyLevel);
+    }
+
+    public boolean isBronzeMember() {
+        return "bronze".equals(loyaltyLevel);
     }
 
     public int getPoints() {
