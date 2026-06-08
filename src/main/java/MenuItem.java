@@ -61,53 +61,84 @@ public class MenuItem {
     public double priceForDay(String day, boolean happyHour, boolean campusEvent, String couponCode) {
         double p = price;
         if (type.equals("drink")) {
-            if (happyHour == true) {
-                p = p - 1.00;
-            }
-            if (size.equals("large")) {
-                p = p + 1.25;
-            } else if (size.equals("small")) {
-                p = p - 0.50;
-            } else {
-                p = p + 0.00;
-            }
+            p = applyDrinkPricing(p, happyHour);
         } else if (type.equals("meal")) {
-            if (day.equals("Friday")) {
-                p = p + 0.50;
-            }
-            if (spicy == true && campusEvent == true) {
-                p = p - 0.75;
-            }
-            if (size.equals("large")) {
-                p = p + 2.00;
-            } else if (size.equals("small")) {
-                p = p - 1.00;
-            }
+            p = applyMealPricing(p, day, campusEvent);
         } else if (type.equals("dessert")) {
-            if (day.equals("Monday")) {
-                p = p - 0.80;
-            }
-            if (seasonal == true) {
-                p = p + 1.10;
-            }
+            p = applyDessertPricing(p, day);
         } else if (type.equals("side")) {
-            if (day.equals("Wednesday")) {
-                p = p - 0.40;
-            }
+            p = applySidePricing(p, day);
         } else {
-            p = p + 0.25;
+            p = applyDefaultPricing(p);
         }
 
+        p = applyCoupon(p, couponCode);
+        return Math.max(p, 0);
+    }
+
+    private double applyDrinkPricing(double currentPrice, boolean happyHour) {
+        double updatedPrice = currentPrice;
+        if (happyHour == true) {
+            updatedPrice = updatedPrice - 1.00;
+        }
+        if (size.equals("large")) {
+            updatedPrice = updatedPrice + 1.25;
+        } else if (size.equals("small")) {
+            updatedPrice = updatedPrice - 0.50;
+        } else {
+            updatedPrice = updatedPrice + 0.00;
+        }
+        return updatedPrice;
+    }
+
+    private double applyMealPricing(double currentPrice, String day, boolean campusEvent) {
+        double updatedPrice = currentPrice;
+        if (day.equals("Friday")) {
+            updatedPrice = updatedPrice + 0.50;
+        }
+        if (spicy == true && campusEvent == true) {
+            updatedPrice = updatedPrice - 0.75;
+        }
+        if (size.equals("large")) {
+            updatedPrice = updatedPrice + 2.00;
+        } else if (size.equals("small")) {
+            updatedPrice = updatedPrice - 1.00;
+        }
+        return updatedPrice;
+    }
+
+    private double applyDessertPricing(double currentPrice, String day) {
+        double updatedPrice = currentPrice;
+        if (day.equals("Monday")) {
+            updatedPrice = updatedPrice - 0.80;
+        }
+        if (seasonal == true) {
+            updatedPrice = updatedPrice + 1.10;
+        }
+        return updatedPrice;
+    }
+
+    private double applySidePricing(double currentPrice, String day) {
+        double updatedPrice = currentPrice;
+        if (day.equals("Wednesday")) {
+            updatedPrice = updatedPrice - 0.40;
+        }
+        return updatedPrice;
+    }
+
+    private double applyDefaultPricing(double currentPrice) {
+        return currentPrice + 0.25;
+    }
+
+    private double applyCoupon(double currentPrice, String couponCode) {
+        double updatedPrice = currentPrice;
         if (couponCode != null && couponCode.equals("SAVE2")) {
-            p = p - 2.00;
+            updatedPrice = updatedPrice - 2.00;
         }
         if (couponCode != null && couponCode.equals("HALFOFFDRINK") && type.equals("drink")) {
-            p = p * 0.5;
+            updatedPrice = updatedPrice * 0.5;
         }
-        if (p < 0) {
-            p = 0;
-        }
-        return p;
+        return updatedPrice;
     }
 
     public double priceForOrder(int quantity, String day, boolean happyHour, boolean campusEvent, String couponCode,
