@@ -263,10 +263,4 @@ public class MenuItem {
         return s;
     }
 
-    public boolean isMealThing() {
-        if ("meal".equals(type)) {
-            return true;
-        }
-        return false;
-    }
 }
