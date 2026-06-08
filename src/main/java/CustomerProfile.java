@@ -13,12 +13,12 @@ public class CustomerProfile {
     private boolean banned;
     private final List<String> notes = new ArrayList<String>();
 
-    public CustomerProfile(String name, String phone, String email, String street, String city, String state, String zip,
+    public CustomerProfile(String name, String phone, String email, Address address,
             String loyaltyLevel, int points, boolean isStudent, boolean wantsTexts, boolean banned) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.address = new Address(street, city, state, zip);
+        this.address = address;
         this.loyaltyLevel = loyaltyLevel;
         this.points = points;
         this.isStudent = isStudent;
@@ -38,8 +38,12 @@ public class CustomerProfile {
         return name + " / " + phone;
     }
 
-    public void updateAddress(String street, String city, String state, String zip) {
-        this.address = new Address(street, city, state, zip);
+    public Address getAddress() {
+        return address;
+    }
+
+    public void updateAddress(Address address) {
+        this.address = address;
     }
 
     public String getName() {
@@ -64,38 +68,6 @@ public class CustomerProfile {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getStreet() {
-        return address.getStreet();
-    }
-
-    public void setStreet(String street) {
-        address.setStreet(street);
-    }
-
-    public String getCity() {
-        return address.getCity();
-    }
-
-    public void setCity(String city) {
-        address.setCity(city);
-    }
-
-    public String getState() {
-        return address.getState();
-    }
-
-    public void setState(String state) {
-        address.setState(state);
-    }
-
-    public String getZip() {
-        return address.getZip();
-    }
-
-    public void setZip(String zip) {
-        address.setZip(zip);
     }
 
     public String getLoyaltyLevel() {

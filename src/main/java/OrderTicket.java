@@ -45,11 +45,11 @@ public class OrderTicket {
     }
 
     public double calcTotal(String paymentMethod, boolean printDebug, String cashierName, String registerId,
-            boolean rush, String street, String city, String state, String zip) {
+            boolean rush, Address address) {
         double subtotal = calculateSubtotal();
         subtotal = applyOrderDiscounts(subtotal);
 
-        double deliveryFee = calculateDeliveryFee(rush, street, city, state, zip);
+        double deliveryFee = calculateDeliveryFee(rush, address);
         double serviceFee = calculateServiceFee(paymentMethod, subtotal);
         double tax = (subtotal + deliveryFee + serviceFee) * TAX_RATE;
 
@@ -88,17 +88,18 @@ public class OrderTicket {
         return Math.max(subtotal, 0);
     }
 
-    private double calculateDeliveryFee(boolean rush, String street, String city, String state, String zip) {
+    private double calculateDeliveryFee(boolean rush, Address address) {
         double deliveryFee = 0;
         if ("delivery".equals(orderType)) {
             deliveryFee = 4.99;
-            if (zip.startsWith("9")) {
+            if (address.getZip().startsWith("9")) {
                 deliveryFee = deliveryFee + 2.50;
             }
             if (rush) {
                 deliveryFee = deliveryFee + 3.00;
             }
-            if (street.length() < 3 || city.length() < 2 || state.length() != 2 || zip.length() < 5) {
+            if (address.getStreet().length() < 3 || address.getCity().length() < 2 || address.getState().length() != 2
+                    || address.getZip().length() < 5) {
                 deliveryFee = deliveryFee + 10.00;
             }
         } else if ("pickup".equals(orderType)) {
@@ -132,7 +133,7 @@ public class OrderTicket {
         receipt = receipt + buildReceiptHeader();
         receipt = receipt + formatReceiptItems();
         receipt = receipt + "Total: $" + calcTotal(paymentMethod, false, cashierName, registerId, rush,
-                customer.getStreet(), customer.getCity(), customer.getState(), customer.getZip()) + "\n";
+                customer.getAddress()) + "\n";
         receipt = receipt + "Thanks " + customer.getName() + "!\n";
         return receipt;
     }

@@ -22,8 +22,7 @@ public class RefactoringProjectTests {
         CustomerProfile customer = sampleCustomer();
         OrderTicket ticket = sampleOrder(customer);
 
-        double total = ticket.calcTotal("credit", false, "Sam", "REG-2", true, customer.getStreet(),
-                customer.getCity(), customer.getState(), customer.getZip());
+        double total = ticket.calcTotal("credit", false, "Sam", "REG-2", true, customer.getAddress());
         assertEquals(52.18, total, 0.001);
 
         String receipt = ticket.printTicket("credit", "Sam", "REG-2", true);
@@ -50,8 +49,8 @@ public class RefactoringProjectTests {
         OrderTicket normalTicket = sampleOrder(sampleCustomer());
         assertFalse(normalTicket.riskyCustomerCheck());
 
-        CustomerProfile badContactCustomer = new CustomerProfile("Jay Wu", "123", "jay.example.com", "9", "Q",
-                "Massachusetts", "9", "none", 3, false, false, false);
+        CustomerProfile badContactCustomer = new CustomerProfile("Jay Wu", "123", "jay.example.com",
+                new Address("9", "Q", "Massachusetts", "9"), "none", 3, false, false, false);
         OrderTicket questionable = new OrderTicket(badContactCustomer, "delivery", "Monday", false, false, "SAVE2");
         questionable.add(new MenuItem("D77", "Cola", "drink", 2.95, 150, false, true, false, "large"), 1);
         assertTrue(questionable.riskyCustomerCheck());
@@ -63,14 +62,14 @@ public class RefactoringProjectTests {
     @Test
     void customerAddressCanBeUpdated() {
         CustomerProfile customer = sampleCustomer();
-        customer.updateAddress("44 Library Rd", "Cambridge", "MA", "02139");
+        customer.updateAddress(new Address("44 Library Rd", "Cambridge", "MA", "02139"));
 
         assertEquals("44 Library Rd, Cambridge, MA 02139", customer.getFullAddress());
     }
 
     private CustomerProfile sampleCustomer() {
         CustomerProfile customer = new CustomerProfile("Mina Patel", "5551234567", "mina@example.com",
-                "17 College Ave", "Boston", "MA", "02118", "gold", 140, true, true, false);
+                new Address("17 College Ave", "Boston", "MA", "02118"), "gold", 140, true, true, false);
         customer.addNote("Usually asks for extra napkins");
         customer.addNote("Do not ring doorbell during evening deliveries");
         return customer;
