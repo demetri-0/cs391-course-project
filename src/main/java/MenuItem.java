@@ -1,13 +1,13 @@
 public class MenuItem {
-    public String code;
-    public String name;
-    public String type;
-    public double price;
-    public int calories;
-    public boolean spicy;
-    public boolean vegan;
-    public boolean seasonal;
-    public String size;
+    private final String code;
+    private final String name;
+    private final String type;
+    private final double price;
+    private final int calories;
+    private final boolean spicy;
+    private final boolean vegan;
+    private final boolean seasonal;
+    private final String size;
 
     public MenuItem(String code, String name, String type, double price, int calories, boolean spicy, boolean vegan,
             boolean seasonal, String size) {
@@ -20,6 +20,42 @@ public class MenuItem {
         this.vegan = vegan;
         this.seasonal = seasonal;
         this.size = size;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public boolean isSpicy() {
+        return spicy;
+    }
+
+    public boolean isVegan() {
+        return vegan;
+    }
+
+    public boolean isSeasonal() {
+        return seasonal;
+    }
+
+    public String getSize() {
+        return size;
     }
 
     public double priceForDay(String day, boolean happyHour, boolean campusEvent, String couponCode) {
